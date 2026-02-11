@@ -35,6 +35,7 @@ export const UserService = {
 
     async create(data: Partial<User>): Promise<UserProtected> {
          data.password = await bcript.hash(data.password, saltRounds)
+         data.createdAt = new Date()
         const user = repo.create(data)
         await repo.save(user)
 
