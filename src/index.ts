@@ -3,14 +3,22 @@ import { AppDataSource } from './database/data-source';
 import express from "express"
 import userRoutes from "./routes/user.routes"
 import routeLogin from './routes/auth.routes'
+const cors = require("cors");
 
 dotenv.config();
 
 AppDataSource.initialize().then(async () => {
     const app = express();
+    app.use(
+        cors({
+            origin: "http://localhost:3000",
+            methods: ["GET", "POST"],
+            credentials: true,
+        })
+    );
     app.use(express.json());
     app.use('/users', userRoutes);
-     app.use('/login', routeLogin)
+    app.use('/login', routeLogin);
     app.listen(process.env.PORT, () => {
         console.log('Servidor rodando na porta: ', process.env.PORT);
     })
